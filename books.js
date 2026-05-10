@@ -21,22 +21,46 @@ const bookSchema = new mongoose.Schema({
     },
     price:{
         type:Number,
+        min:[1,"price is too low for sell"]
     },
+    discount:{
+        type:Number,
+        default:0,
+    },
+    category:{
+        type:String,
+        enum:["fiction","non-fiction"],
+    }
 
 });
 
 const Book=mongoose.model("Book",bookSchema);
 
-let book1 =new Book({
-    title:"12th Rd sharma",
-    author:"xyz",
-    price:1200,
-});
-
-book1.save()
+//validation in updation
+Book.findByIdAndUpdate("6a01105bbe49fdc73e41d5a0",
+    {price:-100},
+    {runValidators:true},
+)
 .then((res)=>{
     console.log(res);
 })
 .catch((err)=>{
     console.log(err);
-});
+})
+
+
+
+
+// let book1 =new Book({
+//     title:"marvel comics",
+//     price:400,
+//     category:"fiction",
+// });
+
+// book1.save()
+// .then((res)=>{
+//     console.log(res);
+// })
+// .catch((err)=>{
+//     console.log(err);
+// });
